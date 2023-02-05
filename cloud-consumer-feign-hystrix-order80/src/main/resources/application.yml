@@ -1,0 +1,36 @@
+server:
+  port: 80
+
+eureka:
+  client:
+    register-with-eureka: false
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/
+
+#OpenFeign默认等待1秒钟，超过后报错，YML文件里需要开启OpenFeign客户端超时控制
+ribbon:
+  #指的是建立连接后从服务器读取到可用资源所用的时间
+  ReadTimeout: 5000
+  #指的是建立连接所用的时间，适用于网络状况正常的情况下,两端连接所用的时间
+  ConnectTimeout: 5000
+
+
+#可以注释掉fegin对hystrix的支持 加上上面ribbon的超时设置，也可以把下面的代码注释打开，
+# 其实我试了下面的代码，注释和不注释效果一样(还是打开吧)
+
+
+#开启feign的Hystrix断路器,默认是false
+feign:
+  hystrix:
+    enabled: true
+
+
+#默认超时时间指定
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+
